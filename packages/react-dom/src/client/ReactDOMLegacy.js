@@ -171,7 +171,8 @@ function warnOnInvalidCallback(callback: mixed, callerName: string): void {
     }
   }
 }
-
+comment
+// NOTEBOOK: 传统渲染，将子树渲染到容器内（id = App）
 function legacyRenderSubtreeIntoContainer(
   parentComponent: ?React$Component<any, any>,
   children: ReactNodeList,
@@ -190,6 +191,7 @@ function legacyRenderSubtreeIntoContainer(
   let fiberRoot;
   if (!root) {
     // Initial mount
+    // NOTEBOOK: 根节点不存在，即初次渲染（mount阶段）
     root = container._reactRootContainer = legacyCreateRootFromDOMContainer(
       container,
       forceHydrate,
@@ -284,6 +286,7 @@ export function hydrate(
   );
 }
 
+// NOTEBOOK: 传统模式的入口。ReactDOM.render
 export function render(
   element: React$Element<any>,
   container: Container,
