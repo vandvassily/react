@@ -247,6 +247,7 @@ export function createContainer(
   return createFiberRoot(containerInfo, tag, hydrate, hydrationCallbacks);
 }
 
+// NOTEBOOK: 更新容器内的节点
 export function updateContainer(
   element: ReactNodeList,
   container: OpaqueRoot,
@@ -314,7 +315,10 @@ export function updateContainer(
     update.callback = callback;
   }
 
+  // NOTEBOOK: 首先会生成一个 update ，不管是 setState 或者是 React.render 造成的更新
+  // 都会生成一个 update 对象，并且赋值给 Fiber.updateQueue
   enqueueUpdate(current, update);
+  // NOTEBOOK: 调度更新
   scheduleUpdateOnFiber(current, lane, eventTime);
 
   return lane;

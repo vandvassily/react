@@ -1113,6 +1113,7 @@ function updateHostRoot(current, workInProgress, renderLanes) {
   } else {
     // Otherwise reset hydration state in case we aborted and resumed another
     // root.
+    // NOTEBOOK: diff算法，分为单节点和多节点的diff
     reconcileChildren(current, workInProgress, nextChildren, renderLanes);
     resetHydrationState();
   }
@@ -3074,6 +3075,7 @@ function remountFiber(
   }
 }
 
+// NOTEBOOK: render阶段的 beiginWork
 function beginWork(
   current: Fiber | null,
   workInProgress: Fiber,
@@ -3352,6 +3354,7 @@ function beginWork(
       );
     }
     case HostRoot:
+      // NOTEBOOK: 更新宿主根节点
       return updateHostRoot(current, workInProgress, renderLanes);
     case HostComponent:
       return updateHostComponent(current, workInProgress, renderLanes);

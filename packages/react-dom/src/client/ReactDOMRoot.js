@@ -117,6 +117,7 @@ ReactDOMRoot.prototype.unmount = ReactDOMBlockingRoot.prototype.unmount = functi
   });
 };
 
+// NOTEBOOK: 创建根节点的实现
 function createRootImpl(
   container: Container,
   tag: RootTag,
@@ -131,6 +132,7 @@ function createRootImpl(
       options.hydrationOptions != null &&
       options.hydrationOptions.mutableSources) ||
     null;
+  // NOTEBOOK: 创建 FiberRootNode 实例，也就是根节点
   const root = createContainer(container, tag, hydrate, hydrationCallbacks);
   markContainerAsRoot(root.current, container);
   const containerNodeType = container.nodeType;

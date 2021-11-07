@@ -723,6 +723,7 @@ function commitLayoutEffectsForProfiler(
   }
 }
 
+// NOTEBOOK: 类组件中的 commitLayoutEffects，触发生命周期事件
 function commitLayoutEffectsForClassComponent(finishedWork: Fiber) {
   const instance = finishedWork.stateNode;
   const current = finishedWork.alternate;
@@ -780,6 +781,7 @@ function commitLayoutEffectsForClassComponent(finishedWork: Fiber) {
       const prevState = current.memoizedState;
       // We could update instance props and state here,
       // but instead we rely on them being set during last render.
+      // NOTEBOOK: 我们可以在这里更新实例中的props和state，但是我们会在最后一次渲染中设置这些值
       // TODO: revisit this when we implement resuming.
       if (__DEV__) {
         if (

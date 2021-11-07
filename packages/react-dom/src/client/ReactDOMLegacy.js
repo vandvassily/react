@@ -149,6 +149,7 @@ function legacyCreateRootFromDOMContainer(
     }
   }
 
+  // NOTEBOOK: 创建根节点
   return createLegacyRoot(
     container,
     shouldHydrate
@@ -171,7 +172,7 @@ function warnOnInvalidCallback(callback: mixed, callerName: string): void {
     }
   }
 }
-comment
+
 // NOTEBOOK: 传统渲染，将子树渲染到容器内（id = App）
 function legacyRenderSubtreeIntoContainer(
   parentComponent: ?React$Component<any, any>,
@@ -190,8 +191,9 @@ function legacyRenderSubtreeIntoContainer(
   let root: RootType = (container._reactRootContainer: any);
   let fiberRoot;
   if (!root) {
-    // Initial mount
     // NOTEBOOK: 根节点不存在，即初次渲染（mount阶段）
+    // Initial mount
+    // NOTEBOOK: 创建根节点，并将根节点挂载到容器内
     root = container._reactRootContainer = legacyCreateRootFromDOMContainer(
       container,
       forceHydrate,
@@ -205,6 +207,8 @@ function legacyRenderSubtreeIntoContainer(
       };
     }
     // Initial mount should not be batched.
+    // NOTEBOOK: 第一次不需要批量处理，需要尽快渲染
+    // NOTEBOOK: 非批量渲染，即第一次渲染
     unbatchedUpdates(() => {
       updateContainer(children, fiberRoot, parentComponent, callback);
     });

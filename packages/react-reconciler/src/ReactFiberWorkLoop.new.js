@@ -525,6 +525,7 @@ function requestRetryLane(fiber: Fiber) {
   return findRetryLane(currentEventWipLanes);
 }
 
+// NOTEBOOK: 新版 Lane模型 的调度
 export function scheduleUpdateOnFiber(
   fiber: Fiber,
   lane: Lane,
@@ -585,6 +586,7 @@ export function scheduleUpdateOnFiber(
       // This is a legacy edge case. The initial mount of a ReactDOM.render-ed
       // root inside of batchedUpdates should be synchronous, but layout updates
       // should be deferred until the end of the batch.
+      // NOTEBOOK: 如果是 ReactDOM.render 方法渲染的根节点，则不需要延迟更新，直接执行更新
       performSyncWorkOnRoot(root);
     } else {
       ensureRootIsScheduled(root, eventTime);
@@ -973,6 +975,7 @@ function markRootSuspended(root, suspendedLanes) {
 
 // This is the entry point for synchronous tasks that don't go
 // through Scheduler
+// NOTEBOOK: 同步任务，不需要经过调度，即更新 root 节点。
 function performSyncWorkOnRoot(root) {
   invariant(
     (executionContext & (RenderContext | CommitContext)) === NoContext,
@@ -983,6 +986,7 @@ function performSyncWorkOnRoot(root) {
 
   let lanes;
   let exitStatus;
+  // NOTEBOOK: 初始化时，workInProgressRoot 为null。
   if (
     root === workInProgressRoot &&
     includesSomeLane(root.expiredLanes, workInProgressRootRenderLanes)
@@ -1010,6 +1014,7 @@ function performSyncWorkOnRoot(root) {
     }
   } else {
     lanes = getNextLanes(root, NoLanes);
+    // NOTEBOOK: 同步渲染根节点。
     exitStatus = renderRootSync(root, lanes);
   }
 
@@ -1524,6 +1529,7 @@ function renderRootSync(root: FiberRoot, lanes: Lanes) {
 
   do {
     try {
+      // NOTEBOOK: 循环进行
       workLoopSync();
       break;
     } catch (thrownValue) {
@@ -1650,6 +1656,8 @@ function workLoopConcurrent() {
   }
 }
 
+// NOTEBOOK: 首先执行beginWork进行节点操作，以及创建子节点，子节点会返回成为next，
+// 如果有next就返回。返回到workLoop之后，workLoop会判断是否过期之类的，如果都OK就会再次调用该方法。
 function performUnitOfWork(unitOfWork: Fiber): void {
   // The current, flushed, state of this fiber is the alternate. Ideally
   // nothing should rely on this, but relying on it here means that we don't
@@ -1772,6 +1780,7 @@ function completeUnitOfWork(unitOfWork: Fiber): void {
   }
 }
 
+// NOTEBOOK: commit阶段
 function commitRoot(root) {
   const renderPriorityLevel = getCurrentPriorityLevel();
   runWithPriority(
@@ -1903,6 +1912,7 @@ function commitRootImpl(root, renderPriorityLevel) {
     focusedInstanceHandle = prepareForCommit(root.containerInfo);
     shouldFireAfterActiveInstanceBlur = false;
 
+    // NOTEBOOK: commit阶段，执行beforeMutation
     commitBeforeMutationEffects(finishedWork);
 
     // We no longer need to track the active instance fiber
@@ -1915,6 +1925,7 @@ function commitRootImpl(root, renderPriorityLevel) {
     }
 
     // The next phase is the mutation phase, where we mutate the host tree.
+    // NOTEBOOK: commit阶段，执行mutation
     commitMutationEffects(finishedWork, root, renderPriorityLevel);
 
     if (shouldFireAfterActiveInstanceBlur) {
@@ -1957,6 +1968,7 @@ function commitRootImpl(root, renderPriorityLevel) {
       resetCurrentDebugFiberInDEV();
     } else {
       try {
+        // NOTEBOOK: commit阶段，执行layout
         recursivelyCommitLayoutEffects(finishedWork, root);
       } catch (error) {
         captureCommitPhaseErrorOnRoot(finishedWork, finishedWork, error);
