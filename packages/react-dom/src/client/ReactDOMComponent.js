@@ -376,6 +376,7 @@ function setInitialDOMProperties(
   }
 }
 
+// NOTEBOOK: 为更新队列 updateQueue 更新DOM属性
 function updateDOMProperties(
   domElement: Element,
   updatePayload: Array<any>,

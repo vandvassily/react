@@ -1790,6 +1790,7 @@ function commitRoot(root) {
   return null;
 }
 
+// NOTEBOOK: commit阶段真正的实现
 function commitRootImpl(root, renderPriorityLevel) {
   do {
     // `flushPassiveEffects` will call `flushSyncUpdateQueue` at the end, which
@@ -1798,6 +1799,7 @@ function commitRootImpl(root, renderPriorityLevel) {
     // no more pending effects.
     // TODO: Might be better if `flushPassiveEffects` did not automatically
     // flush synchronous work at the end, to avoid factoring hazards like this.
+    // NOTEBOOK: 触发useEffect回调与其他同步任务
     flushPassiveEffects();
   } while (rootWithPendingPassiveEffects !== null);
   flushRenderPhaseStrictModeWarningsInDEV();
@@ -1909,6 +1911,7 @@ function commitRootImpl(root, renderPriorityLevel) {
     // The first phase a "before mutation" phase. We use this phase to read the
     // state of the host tree right before we mutate it. This is where
     // getSnapshotBeforeUpdate is called.
+    // NOTEBOOK: getSnapshotBeforeUpdate 生命周期触发
     focusedInstanceHandle = prepareForCommit(root.containerInfo);
     shouldFireAfterActiveInstanceBlur = false;
 
@@ -2223,6 +2226,7 @@ function commitBeforeMutationEffectsDeletions(deletions: Array<Fiber>) {
   }
 }
 
+// NOTEBOOK: commitMutationEffects 提交mutation
 function commitMutationEffects(
   firstChild: Fiber,
   root: FiberRoot,
@@ -2273,6 +2277,7 @@ function commitMutationEffects(
   }
 }
 
+// NOTOBOOK: commitMutationEffects的实现
 function commitMutationEffectsImpl(
   fiber: Fiber,
   root: FiberRoot,
@@ -2300,6 +2305,7 @@ function commitMutationEffectsImpl(
   // updates, and deletions. To avoid needing to add a case for every possible
   // bitmap value, we remove the secondary effects from the effect tag and
   // switch on that value.
+  // NOTEBOOK: 巧妙运用位运算
   const primaryFlags = flags & (Placement | Update | Hydrating);
   switch (primaryFlags) {
     case Placement: {

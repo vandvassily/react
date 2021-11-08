@@ -325,7 +325,7 @@ function commitBeforeMutationLifeCycles(
       'likely caused by a bug in React. Please file an issue.',
   );
 }
-
+// NOTEBOOK: 遍历所有的 effectList，执行所有的 useLayoutEffect 的销毁函数
 function commitHookEffectListUnmount(
   flags: HookFlags,
   finishedWork: Fiber,
@@ -1052,6 +1052,7 @@ function commitUnmount(
       safelyDetachRef(current, nearestMountedAncestor);
       const instance = current.stateNode;
       if (typeof instance.componentWillUnmount === 'function') {
+        // NOTEBOOK: 调用 componentWillUnmount 生命周期钩子
         safelyCallComponentWillUnmount(
           current,
           instance,
@@ -1292,6 +1293,7 @@ function getHostSibling(fiber: Fiber): ?Instance {
   }
 }
 
+// NOTEBOOK: 插入DOM节点到页面中
 function commitPlacement(finishedWork: Fiber): void {
   if (!supportsMutation) {
     return;
@@ -1573,6 +1575,7 @@ function unmountHostComponents(
   }
 }
 
+// NOTEBOOK: 递归删除所有的宿主节点
 function commitDeletion(
   finishedRoot: FiberRoot,
   current: Fiber,
@@ -1604,6 +1607,7 @@ function commitDeletion(
   }
 }
 
+// NOTEBOOK: Fiber节点需要更新时，会调用此方法。针对不同的节点tag，走入不同的方法。
 function commitWork(current: Fiber | null, finishedWork: Fiber): void {
   if (!supportsMutation) {
     switch (finishedWork.tag) {
@@ -1680,6 +1684,7 @@ function commitWork(current: Fiber | null, finishedWork: Fiber): void {
     case MemoComponent:
     case SimpleMemoComponent:
     case Block: {
+      // NOTEBOO: 函数式组件处理逻辑
       // Layout effects are destroyed during the mutation phase so that all
       // destroy functions for all fibers are called before any create functions.
       // This prevents sibling component effects from interfering with each other,
@@ -1701,6 +1706,7 @@ function commitWork(current: Fiber | null, finishedWork: Fiber): void {
           recordLayoutEffectDuration(finishedWork);
         }
       } else {
+        // NOTEBOOK: 执行 useLayoutEffect 的销毁函数
         commitHookEffectListUnmount(
           HookLayout | HookHasEffect,
           finishedWork,
@@ -1726,6 +1732,7 @@ function commitWork(current: Fiber | null, finishedWork: Fiber): void {
         const updatePayload: null | UpdatePayload = (finishedWork.updateQueue: any);
         finishedWork.updateQueue = null;
         if (updatePayload !== null) {
+          // NOTEBOOK:  update 相应的 fiber节点
           commitUpdate(
             instance,
             updatePayload,
