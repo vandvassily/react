@@ -7,6 +7,8 @@
  * @flow
  */
 
+// NOTEBOOK: React 配置参数文件
+
 import type {DOMEventName} from '../events/DOMEventNames';
 import type {Fiber, FiberRoot} from 'react-reconciler/src/ReactInternalTypes';
 import type {
@@ -432,6 +434,7 @@ export function resetTextContent(domElement: Instance): void {
   setTextContent(domElement, '');
 }
 
+// NOTEBOOK: 直接更新 textNode 节点的内容
 export function commitTextUpdate(
   textInstance: TextInstance,
   oldText: string,

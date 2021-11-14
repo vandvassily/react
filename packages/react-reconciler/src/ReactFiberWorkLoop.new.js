@@ -1940,6 +1940,7 @@ function commitRootImpl(root, renderPriorityLevel) {
     // the mutation phase, so that the previous tree is still current during
     // componentWillUnmount, but before the layout phase, so that the finished
     // work is current during componentDidMount/Update.
+    // NOTEBOOK: 此处完成了 current Fiber树 和 workInProgress Fiber树 的切换
     root.current = finishedWork;
 
     // The next phase is the layout phase, where we call effects that read

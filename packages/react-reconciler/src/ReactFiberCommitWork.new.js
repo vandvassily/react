@@ -1607,7 +1607,7 @@ function commitDeletion(
   }
 }
 
-// NOTEBOOK: Fiber节点需要更新时，会调用此方法。针对不同的节点tag，走入不同的方法。
+// NOTEBOOK: Fiber节点实际更新时，会调用此方法。针对不同的节点tag，走入不同的方法。
 function commitWork(current: Fiber | null, finishedWork: Fiber): void {
   if (!supportsMutation) {
     switch (finishedWork.tag) {

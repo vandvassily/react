@@ -217,6 +217,7 @@ function workLoop(hasTimeRemaining, initialTime) {
   }
 }
 
+// NOTEBOOK: 更改任务的优先级
 function unstable_runWithPriority(priorityLevel, eventHandler) {
   switch (priorityLevel) {
     case ImmediatePriority:
